@@ -7,46 +7,64 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Figtree:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Figtree:wght@400;500;600;700&family=Noto+Sans:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&family=PT+Serif:ital@0;1&family=Tiro+Devanagari+Hindi:ital@0;1&display=swap">
 <style>
 /* Layout: one calm reading column for phones (guests scan the QR on the TV); sections as plain bands,
-   emergency first, then a live "open now" list, getting around, things to do and practical tips. */
+   emergency first, then a live "open now" list, getting around, things to do and practical tips.
+   Every place is a link: a map pin opens Google Maps, an arrow opens the place's own website. */
 :root{
-  --bg:#f3f5f4; --surface:#ffffff; --ink:#15201f; --muted:#5b6b69; --line:#d9e1df;
+  --bg:#f3f5f4; --surface:#ffffff; --hover:#eaf0ee; --ink:#15201f; --muted:#5b6b69; --line:#d9e1df;
   --sea:#0f5c6e; --lamp:#c8551f; --open:#2f7d4f; --alert:#b4231a;
   --display:"Instrument Serif", "Iowan Old Style", Georgia, serif;
-  --body:"Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --body:"Figtree", "Noto Sans", "Noto Sans Devanagari", system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#0d1517; --surface:#142023; --ink:#e3ebe9; --muted:#93a5a2; --line:#24353a;
+  --bg:#0d1517; --surface:#142023; --hover:#1a2a2e; --ink:#e3ebe9; --muted:#93a5a2; --line:#24353a;
   --sea:#5fb3c7; --lamp:#f0874f; --open:#6cc48f; --alert:#ff7a6e; color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#0d1517; --surface:#142023; --ink:#e3ebe9; --muted:#93a5a2; --line:#24353a;
+  --bg:#0d1517; --surface:#142023; --hover:#1a2a2e; --ink:#e3ebe9; --muted:#93a5a2; --line:#24353a;
   --sea:#5fb3c7; --lamp:#f0874f; --open:#6cc48f; --alert:#ff7a6e; color-scheme:dark}
+/* Instrument Serif has no Cyrillic or Devanagari, so those languages get their own display faces */
+:root[lang="ru"]{--display:"PT Serif", Georgia, serif}
+:root[lang="hi"]{--display:"Tiro Devanagari Hindi", "Noto Sans Devanagari", serif}
 body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;
   padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
-.page{max-width:720px;margin:0 auto;padding-block:28px 48px;display:flex;flex-direction:column;gap:30px}
-h1,h2{font-family:var(--display);font-weight:400;line-height:1.1;text-wrap:balance;margin:0}
-h1{font-size:clamp(38px,9vw,56px)}
+.page{max-width:720px;margin:0 auto;padding-block:20px 48px;display:flex;flex-direction:column;gap:30px}
+h1,h2{font-family:var(--display);font-weight:400;line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(36px,9vw,54px)}
 h1 em{font-style:italic;color:var(--sea)}
-h2{font-size:30px;margin-bottom:12px}
+h2{font-size:30px}
 h3{font-size:16px;font-weight:700;margin:0}
 p{margin:0}
 a{color:var(--sea);text-underline-offset:3px}
-a:focus-visible,button:focus-visible{outline:2px solid var(--lamp);outline-offset:2px;border-radius:4px}
+a:focus-visible,button:focus-visible{outline:2px solid var(--lamp);outline-offset:2px;border-radius:6px}
+.langs{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.langs span{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-right:4px}
+.langs button{font:inherit;font-size:14px;font-weight:600;padding:6px 12px;border-radius:999px;border:1px solid var(--line);
+  background:var(--surface);color:var(--ink);cursor:pointer}
+.langs button[aria-pressed="true"]{background:var(--sea);border-color:var(--sea);color:var(--surface)}
 .lede{color:var(--muted);max-width:60ch;margin-top:10px}
 .kicker{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--lamp)}
-.now{margin-top:14px;font-size:14px;color:var(--muted)}
+.now{margin-top:12px;font-size:14px;color:var(--muted)}
 .now b{color:var(--ink);font-variant-numeric:tabular-nums}
 section{display:flex;flex-direction:column;gap:12px}
-.list{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:12px}
-.item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 14px;padding:14px 16px;border-top:1px solid var(--line)}
+.sub{color:var(--muted);font-size:14.5px;margin-top:-4px}
+.legend{display:flex;gap:16px;font-size:13px;color:var(--muted)}
+.legend span{display:inline-flex;gap:5px;align-items:center}
+.ico{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.list{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 14px;padding:13px 16px;border-top:1px solid var(--line);
+  color:inherit;text-decoration:none;align-items:center}
 .item:first-child{border-top:0}
+a.item:hover,a.card:hover{background:var(--hover)}
+.item .ttl{display:flex;align-items:center;gap:7px;min-width:0}
+.item .ttl .ico{color:var(--sea)}
 .item p{grid-column:1 / -1;color:var(--muted);font-size:14.5px}
-.num{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;user-select:all}
-.sos{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 16px;align-items:center;
+.call{display:inline-flex;gap:6px;align-items:center;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;
+  color:var(--sea);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:4px 12px}
+.sos{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 16px;align-items:center;text-decoration:none;color:inherit;
   background:var(--surface);border:2px solid var(--alert);border-radius:12px;padding:16px}
-.sos .big{font-family:var(--display);font-size:64px;line-height:.9;color:var(--alert);grid-row:span 2}
+.sos .big{font-family:"Instrument Serif", Georgia, serif;font-size:64px;line-height:.9;color:var(--alert);grid-row:span 2}
 .sos p{color:var(--muted);font-size:14.5px}
 .status{font-size:14px;font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums}
 .status.open{color:var(--open)}
@@ -54,12 +72,13 @@ section{display:flex;flex-direction:column;gap:12px}
 .status.open::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--open);margin-right:6px;vertical-align:1px}
 .tag{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;
+  min-width:0;color:inherit;text-decoration:none}
 .card p{color:var(--muted);font-size:14.5px}
-.card .meta{font-size:13px;color:var(--sea);font-weight:600}
+.card .meta{font-size:13px;color:var(--sea);font-weight:600;display:flex;gap:6px;align-items:center;margin-top:auto}
 .words{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
 .word{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
-.word b{font-family:var(--display);font-size:24px;font-weight:400;display:block;line-height:1.1}
+.word b{font-family:"Instrument Serif", Georgia, serif;font-size:24px;font-weight:400;display:block;line-height:1.1}
 .word span{font-size:13px;color:var(--muted)}
 ul.tips{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px;max-width:62ch}
 footer{font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:16px}
@@ -70,143 +89,298 @@ footer{font-size:13px;color:var(--muted);border-top:1px solid var(--line);paddin
 
 
 <main class="page">
+  <nav class="langs" id="langs" aria-label="Language"></nav>
   <header>
-    <div class="kicker">Velkomin · Welcome</div>
-    <h1>Your guide to <em>Akranes</em></h1>
-    <p class="lede">Everything we would tell you over coffee: who to call, what is open right now, how to get to Reykjavík and what is worth seeing around town.</p>
-    <p class="now" id="now">Iceland time <b>--:--</b></p>
+    <div class="kicker" data-t="kicker"></div>
+    <h1 data-h="h1"></h1>
+    <p class="lede" data-t="lede"></p>
+    <p class="now" id="now"></p>
   </header>
 
   <section aria-labelledby="h-help">
-    <h2 id="h-help">If you need help</h2>
-    <div class="sos">
+    <h2 id="h-help" data-t="help_h"></h2>
+    <a class="sos" href="tel:112">
       <div class="big">112</div>
-      <h3>Emergency: police, fire, ambulance, rescue</h3>
-      <p>Works from any phone, free, in English. The free <b>112 Iceland</b> app can also send your location.</p>
-    </div>
-    <div class="list">
-      <div class="item"><h3>Medical advice, any time</h3><span class="num">1700</span>
-        <p>Nurses on call day and night for anything that is not an emergency.</p></div>
-      <div class="item"><h3>HVE hospital &amp; health centre</h3><span class="status" id="st-hve"></span>
-        <p>Merkigerði 9 · <span class="num">432 1000</span>. Health centre weekdays 8–16; a doctor is on call weekday evenings 16–22 and round the clock at weekends (through 1700). Walk-in: Sat 10–12, Sun 11–12.</p></div>
-      <div class="item"><h3>Pharmacy: Apótek Vesturlands</h3><span class="status" id="st-pharm"></span>
-        <p>Smiðjuvellir 32 · <span class="num">431 5090</span>. Mon–Fri 9–18, Sat 10–14, Sun 12–14.</p></div>
-      <div class="item"><h3>Before a hike or a drive</h3><span></span>
-        <p><a href="https://safetravel.is" target="_blank" rel="noopener">safetravel.is</a> for alerts and to leave a travel plan · road conditions on <a href="https://umferdin.is" target="_blank" rel="noopener">umferdin.is</a> or <span class="num">1777</span> · forecasts on <a href="https://en.vedur.is" target="_blank" rel="noopener">vedur.is</a>.</p></div>
-    </div>
+      <h3 data-t="sos_h"></h3>
+      <p data-t="sos_p"></p>
+    </a>
+    <div class="list" id="help"></div>
   </section>
 
   <section aria-labelledby="h-open">
-    <h2 id="h-open">Open right now?</h2>
-    <p class="lede" style="margin-top:-6px">Regular opening hours, worked out live in Iceland time. Public holidays can differ.</p>
+    <h2 id="h-open" data-t="open_h"></h2>
+    <p class="sub" data-t="open_p"></p>
+    <div class="legend" id="legend"></div>
     <div class="list" id="places"></div>
   </section>
 
   <section aria-labelledby="h-move">
-    <h2 id="h-move">Getting around</h2>
-    <div class="cols">
-      <div class="card"><span class="tag">Bus</span><h3>Strætó 50 to Reykjavík</h3>
-        <p>From the <b>Þjóðbraut</b> stop to Mjódd in Reykjavík in about 45 minutes, roughly every 1–2 hours. Buy tickets in the <b>Klappið</b> app.</p>
-        <a class="meta" href="https://www.straeto.is/en" target="_blank" rel="noopener">Timetables on straeto.is</a></div>
-      <div class="card"><span class="tag">Car</span><h3>Reykjavík in 45 minutes</h3>
-        <p>Through the Hvalfjörður tunnel (no toll since 2018). Keflavík airport is about 1 h 20 min. Check wind warnings before crossing Kjalarnes.</p>
-        <a class="meta" href="https://umferdin.is" target="_blank" rel="noopener">Road conditions on umferdin.is</a></div>
-      <div class="card"><span class="tag">Sea</span><h3>Tides matter here</h3>
-        <p>The tide range is up to 4 m. Langisandur beach is at its widest at low tide; Breiðin point is best for watching the surf.</p>
-        <a class="meta" href="https://www.lhg.is/wp-content/uploads/2025/11/Sjavarfallatoflur_2026_vefutgafa.pdf" target="_blank" rel="noopener">Official 2026 tide tables (PDF)</a></div>
-    </div>
+    <h2 id="h-move" data-t="move_h"></h2>
+    <div class="cols" id="move"></div>
   </section>
 
-  <section aria-labelledby="h-do">
-    <h2 id="h-do">In town</h2>
-    <div class="cols">
-      <div class="card"><span class="tag">Beach &amp; hot pool</span><h3>Langisandur &amp; Guðlaug</h3>
-        <p>A long golden sand beach, unusual in Iceland. Guðlaug is a geothermal pool built into the sea wall, warm water with the ocean right below.</p>
-        <span class="meta" id="m-gudlaug"></span></div>
-      <div class="card"><span class="tag">Lighthouse</span><h3>Akranesviti</h3>
-        <p>You can climb to the top for a view across Faxaflói to Reykjavík and Snæfellsjökull on clear days. The older lighthouse beside it is from 1918.</p>
-        <span class="meta" id="m-viti"></span></div>
-      <div class="card"><span class="tag">Museum</span><h3>Byggðasafnið í Görðum</h3>
-        <p>The Akranes Folk Museum: fishing boats, old houses and everyday life on the peninsula. Winter: Saturdays only.</p>
-        <span class="meta" id="m-museum"></span></div>
-      <div class="card"><span class="tag">Swimming</span><h3>Jaðarsbakkalaug</h3>
-        <p>The town pool by the beach, with hot tubs. Open until 22:00 on weekdays.</p>
-        <span class="meta" id="m-pool"></span></div>
-      <div class="card"><span class="tag">Hike</span><h3>Akrafjall</h3>
-        <p>The mountain behind town. Háihnúkur (555 m) is the usual goal, 2–3 hours return from the car park off road 51.</p>
-        <a class="meta" href="https://en.vedur.is" target="_blank" rel="noopener">Check wind before you go</a></div>
-      <div class="card"><span class="tag">Food</span><h3>Galito &amp; Gamla Kaupfélagið</h3>
-        <p>Galito for dinner in town; Gamla Kaupfélagið serves a hot weekday lunch. Krónan and Bónus have everything else.</p>
-        <span class="meta" id="m-food"></span></div>
-    </div>
+  <section aria-labelledby="h-town">
+    <h2 id="h-town" data-t="town_h"></h2>
+    <div class="cols" id="town"></div>
   </section>
 
   <section aria-labelledby="h-near">
-    <h2 id="h-near">Day trips nearby</h2>
-    <div class="list">
-      <div class="item"><h3>Glymur waterfall</h3><span class="tag">40 min</span>
-        <p>One of Iceland's highest waterfalls, at the end of Hvalfjörður. A steep 3–4 hour hike with a log crossing; the log is removed in winter.</p></div>
-      <div class="item"><h3>Borgarnes Settlement Centre</h3><span class="tag">30 min</span>
-        <p>The story of Iceland's settlement and Egil's Saga, a good rainy-day stop.</p></div>
-      <div class="item"><h3>Deildartunguhver &amp; Krauma</h3><span class="tag">1 h</span>
-        <p>Europe's most powerful hot spring, with Krauma baths right next to it.</p></div>
-      <div class="item"><h3>Reykjavík</h3><span class="tag">45 min</span>
-        <p>By car through the tunnel, or bus 50 to Mjódd and then city buses.</p></div>
-      <div class="item"><h3>Snæfellsnes peninsula</h3><span class="tag">2 h</span>
-        <p>Kirkjufell, black beaches and the Snæfellsjökull glacier. A full day; start early in winter.</p></div>
-    </div>
+    <h2 id="h-near" data-t="near_h"></h2>
+    <div class="list" id="near"></div>
   </section>
 
   <section aria-labelledby="h-tips">
-    <h2 id="h-tips">Good to know</h2>
-    <ul class="tips">
-      <li>Tap water is excellent, and the hot water smells a little of sulphur. That is normal.</li>
-      <li>At swimming pools, shower without a swimsuit before going in. It is the rule, and staff will remind you.</li>
-      <li>Cards work everywhere, even for small amounts. Tipping is not expected.</li>
-      <li>Alcohol to take away is sold only at Vínbúðin, not in supermarkets.</li>
-      <li>Weather changes fast. Look at the wind forecast, not just the temperature.</li>
-      <li>Northern lights season is September to April; the cloud forecast on vedur.is tells you where the sky is clear.</li>
-    </ul>
-    <div class="words">
-      <div class="word"><b>Takk</b><span>Thanks</span></div>
-      <div class="word"><b>Góðan daginn</b><span>Good morning</span></div>
-      <div class="word"><b>Skál</b><span>Cheers</span></div>
-      <div class="word"><b>Bless</b><span>Bye</span></div>
-    </div>
+    <h2 id="h-tips" data-t="tips_h"></h2>
+    <ul class="tips" id="tips"></ul>
+    <div class="words" id="words"></div>
   </section>
 
-  <footer>Opening hours were checked in October 2026 against each place's own website or page. If something looks wrong, ask us.</footer>
+  <footer data-t="footer"></footer>
 </main>
 
 <script>
-// Iceland stays on UTC all year, so Iceland time is simply the UTC clock (guests' phones may be set to home time).
+/* ===== where things are: Google Maps for places you need to find, the own website where it says more ===== */
+function maps(q) { return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(q); }
 function wk(monThu, fri, sat, sun) { return [sun, monThu, monThu, monThu, monThu, fri, sat]; }
+// Opening hours: same data as the TV's places.js (checked Oct 2026); keep the two in step.
 var PLACES = [
-  { name: "Krónan", note: "Supermarket · Dalbraut 1 and Akrabraut 1", w: wk("08:00-21:00", "08:00-21:00", "08:00-21:00", "08:00-21:00") },
-  { name: "Bónus", note: "Supermarket · Smiðjuvellir", w: wk("10:00-20:00", "10:00-20:00", "10:00-20:00", "10:00-20:00") },
-  { name: "Einarsbúð", note: "Local grocer · Skagabraut 9–11", w: wk("07:30-18:00", "08:00-18:30", "", "") },
-  { name: "Vínbúðin", note: "Alcohol shop · Kalmansvellir 1", w: wk("11:00-18:00", "11:00-19:00", "11:00-16:00", "") },
-  { name: "Galito", note: "Restaurant", w: wk("11:30-21:00", "11:30-22:00", "12:00-22:00", "17:00-21:00") },
-  { name: "Gamla Kaupfélagið", note: "Lunch canteen · Kirkjubraut 11", w: wk("11:30-13:30", "11:30-13:30", "", "") },
-  { name: "Jaðarsbakkalaug", note: "Swimming pool", w: wk("06:30-22:00", "06:30-22:00", "09:00-19:00", "09:00-19:00") },
-  { name: "Guðlaug", note: "Hot pool at Langisandur", seasons: [
+  { name: "Krónan", note: "supermarket", addr: "Dalbraut 1 · Akrabraut 1", link: maps("Krónan Dalbraut 1 Akranes"), w: wk("08:00-21:00", "08:00-21:00", "08:00-21:00", "08:00-21:00") },
+  { name: "Bónus", note: "supermarket", addr: "", link: maps("Bónus Akranesi"), w: wk("10:00-20:00", "10:00-20:00", "10:00-20:00", "10:00-20:00") },
+  { name: "Einarsbúð", note: "grocer", addr: "Skagabraut 9–11", link: maps("Einarsbúð Skagabraut 9 Akranes"), w: wk("07:30-18:00", "08:00-18:30", "", "") },
+  { name: "Vínbúðin", note: "alcohol", addr: "Kalmansvellir 1", link: maps("Vínbúðin Kalmansvellir 1 Akranes"), w: wk("11:00-18:00", "11:00-19:00", "11:00-16:00", "") },
+  { name: "Galito", note: "restaurant", addr: "", link: "https://galito.is/", web: true, w: wk("11:30-21:00", "11:30-22:00", "12:00-22:00", "17:00-21:00") },
+  { name: "Gamla Kaupfélagið", note: "lunch", addr: "Kirkjubraut 11", link: "https://gamlakaupfelagid.is/", web: true, w: wk("11:30-13:30", "11:30-13:30", "", "") },
+  { name: "Jaðarsbakkalaug", note: "pool", addr: "", link: maps("Jaðarsbakkalaug Akranes"), w: wk("06:30-22:00", "06:30-22:00", "09:00-19:00", "09:00-19:00") },
+  { name: "Guðlaug", note: "hotpool", addr: "", link: maps("Guðlaug Langisandur Akranes"), seasons: [
       { from: "05-02", to: "10-14", w: wk("12:00-20:00", "12:00-20:00", "10:00-18:00", "10:00-18:00") },
       { from: "10-15", to: "05-01", w: wk("16:00-20:00", "16:00-20:00", "10:00-18:00", "10:00-18:00") }] },
-  { name: "Byggðasafnið", note: "Folk museum · Garðaholt 3", seasons: [
+  { name: "Byggðasafnið", note: "museum", addr: "Garðaholt 3", link: "https://www.museum.is/enska", web: true, seasons: [
       { from: "05-15", to: "09-14", w: wk("11:00-17:00", "11:00-17:00", "11:00-17:00", "11:00-17:00") },
       { from: "09-15", to: "05-14", w: wk("", "", "13:00-17:00", "") }] },
-  { name: "Akranesviti", note: "Lighthouse", seasons: [
+  { name: "Akranesviti", note: "lighthouse", addr: "", link: maps("Akranesviti lighthouse Akranes"), seasons: [
       { from: "05-16", to: "09-15", w: wk("10:00-16:00", "10:00-16:00", "10:00-16:00", "10:00-16:00") },
       { from: "09-16", to: "05-15", w: wk("10:00-16:00", "10:00-16:00", "", "") }] }
 ];
-var PHARMACY = { w: wk("09:00-18:00", "09:00-18:00", "10:00-14:00", "12:00-14:00") };
-var HEALTH = { w: wk("08:00-16:00", "08:00-16:00", "", "") };
-var DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+var HELP = [
+  { key: "med", tel: "1700" },
+  { key: "hve", tel: "432 1000", link: maps("Heilbrigðisstofnun Vesturlands Merkigerði 9 Akranes"), w: wk("08:00-16:00", "08:00-16:00", "", "") },
+  { key: "pharm", tel: "431 5090", link: maps("Apótek Vesturlands Smiðjuvellir 32 Akranes"), w: wk("09:00-18:00", "09:00-18:00", "10:00-14:00", "12:00-14:00") },
+  { key: "trip" }
+];
+var MOVE = [
+  { key: "bus", link: "https://www.straeto.is/en", web: true },
+  { key: "car", link: "https://umferdin.is", web: true },
+  { key: "sea", link: "https://www.lhg.is/wp-content/uploads/2025/11/Sjavarfallatoflur_2026_vefutgafa.pdf", web: true }
+];
+var TOWN = [
+  { key: "beach", link: maps("Langisandur beach Akranes"), status: "Guðlaug" },
+  { key: "viti", link: maps("Akranesviti lighthouse Akranes"), status: "Akranesviti" },
+  { key: "museum", link: "https://www.museum.is/enska", web: true, status: "Byggðasafnið" },
+  { key: "pool", link: maps("Jaðarsbakkalaug Akranes"), status: "Jaðarsbakkalaug" },
+  { key: "akrafjall", link: maps("Akrafjall") },
+  { key: "food", link: "https://galito.is/", web: true, status: "Galito" }
+];
+var NEAR = [
+  { key: "glymur", link: maps("Glymur waterfall"), mins: 40 },
+  { key: "borgarnes", link: maps("Settlement Center Borgarnes"), mins: 30 },
+  { key: "deildartunga", link: maps("Deildartunguhver"), mins: 60 },
+  { key: "reykjavik", link: maps("Reykjavík"), mins: 45 },
+  { key: "snaefellsnes", link: maps("Snæfellsnes"), mins: 120 }
+];
+var WORDS = [["Takk", "w_thanks"], ["Góðan daginn", "w_morning"], ["Skál", "w_cheers"], ["Bless", "w_bye"]];
 
+/* ===== texts: English, German, Hindi, Russian. Place names and Icelandic words stay as they are. ===== */
+var LANGS = [["en", "English"], ["de", "Deutsch"], ["hi", "हिन्दी"], ["ru", "Русский"]];
+var T = {
+en: {
+  lang: "Language", kicker: "Velkomin · Welcome", h1: "Your guide to <em>Akranes</em>",
+  lede: "Everything we would tell you over coffee: who to call, what is open right now, how to get to Reykjavík and what is worth seeing around town. Tap any place to open its map or website.",
+  now: "Iceland time", days: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+  months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+  open: "Open · closes {t}", opens: "Opens {t}", opensTomorrow: "Opens tomorrow {t}", opensDay: "Opens {d} {t}", closed: "Closed",
+  map: "Map", site: "Website", call: "Call",
+  help_h: "If you need help", sos_h: "Emergency: police, fire, ambulance, rescue",
+  sos_p: "Free from any phone, and they speak English. The free 112 Iceland app can also send your location.",
+  med_h: "Medical advice, any time", med_p: "Nurses answer day and night for anything that is not an emergency.",
+  hve_h: "HVE hospital & health centre", hve_p: "Merkigerði 9. Health centre weekdays 8–16; a doctor is on call weekday evenings 16–22 and round the clock at weekends (through 1700). Walk-in: Sat 10–12, Sun 11–12.",
+  pharm_h: "Pharmacy: Apótek Vesturlands", pharm_p: "Smiðjuvellir 32. Mon–Fri 9–18, Sat 10–14, Sun 12–14.",
+  trip_h: "Before a hike or a drive", trip_p: "{safetravel} for alerts and to leave a travel plan · road conditions on {umferdin} or 1777 · forecasts on {vedur}.",
+  open_h: "Open right now?", open_p: "Regular opening hours, worked out live in Iceland time. Public holidays can differ.",
+  n_supermarket: "Supermarket", n_grocer: "Local grocer", n_alcohol: "Alcohol shop, the only place that sells it", n_restaurant: "Restaurant",
+  n_lunch: "Lunch canteen", n_pool: "Swimming pool", n_hotpool: "Hot pool at Langisandur beach", n_museum: "Folk museum", n_lighthouse: "Lighthouse",
+  move_h: "Getting around",
+  bus_tag: "Bus", bus_h: "Strætó 50 to Reykjavík", bus_p: "From the Þjóðbraut stop to Mjódd in Reykjavík in about 45 minutes, roughly every 1–2 hours. Buy tickets in the Klappið app.", bus_l: "Timetables on straeto.is",
+  car_tag: "Car", car_h: "Reykjavík in 45 minutes", car_p: "Through the Hvalfjörður tunnel (no toll since 2018). Keflavík airport is about 1 h 20 min away. Check wind warnings before crossing Kjalarnes.", car_l: "Road conditions on umferdin.is",
+  sea_tag: "Sea", sea_h: "Tides matter here", sea_p: "The tide range is up to 4 m. Langisandur beach is at its widest at low tide; Breiðin point is best for watching the surf.", sea_l: "Official 2026 tide tables (PDF)",
+  town_h: "In town",
+  beach_tag: "Beach & hot pool", beach_h: "Langisandur & Guðlaug", beach_p: "A long golden sand beach, unusual in Iceland. Guðlaug is a geothermal pool built into the sea wall, with warm water and the ocean right below.",
+  viti_tag: "Lighthouse", viti_h: "Akranesviti", viti_p: "You can climb to the top for a view across Faxaflói to Reykjavík and, on clear days, Snæfellsjökull. The older lighthouse beside it is from 1918.",
+  museum_tag: "Museum", museum_h: "Byggðasafnið í Görðum", museum_p: "The Akranes Folk Museum: fishing boats, old houses and everyday life on the peninsula. Winter: Saturdays only.",
+  pool_tag: "Swimming", pool_h: "Jaðarsbakkalaug", pool_p: "The town pool by the beach, with hot tubs. Open until 22:00 on weekdays.",
+  akrafjall_tag: "Hike", akrafjall_h: "Akrafjall", akrafjall_p: "The mountain behind town. Háihnúkur (555 m) is the usual goal, 2–3 hours return from the car park off road 51.",
+  food_tag: "Food", food_h: "Galito & Gamla Kaupfélagið", food_p: "Galito for dinner in town; Gamla Kaupfélagið serves a hot weekday lunch. Krónan and Bónus have everything else.",
+  near_h: "Day trips nearby", min: "{n} min", hour: "{n} h",
+  glymur_h: "Glymur waterfall", glymur_p: "One of Iceland's highest waterfalls, at the end of Hvalfjörður. A steep 3–4 hour hike with a log crossing; the log is removed in winter.",
+  borgarnes_h: "Borgarnes Settlement Centre", borgarnes_p: "The story of Iceland's settlement and Egil's Saga, a good rainy-day stop.",
+  deildartunga_h: "Deildartunguhver & Krauma", deildartunga_p: "Europe's most powerful hot spring, with the Krauma baths right next to it.",
+  reykjavik_h: "Reykjavík", reykjavik_p: "By car through the tunnel, or bus 50 to Mjódd and then city buses.",
+  snaefellsnes_h: "Snæfellsnes peninsula", snaefellsnes_p: "Kirkjufell, black beaches and the Snæfellsjökull glacier. A full day; start early in winter.",
+  tips_h: "Good to know", tips: [
+    "Tap water is excellent, and the hot water smells a little of sulphur. That is normal.",
+    "At swimming pools, shower without a swimsuit before going in. It is the rule, and staff will remind you.",
+    "Cards work everywhere, even for small amounts. Tipping is not expected.",
+    "Alcohol to take away is sold only at Vínbúðin, not in supermarkets.",
+    "Weather changes fast. Look at the wind forecast, not just the temperature.",
+    "Northern lights season is September to April; the cloud forecast on vedur.is shows where the sky is clear."],
+  w_thanks: "Thanks", w_morning: "Good morning", w_cheers: "Cheers", w_bye: "Bye",
+  footer: "Opening hours were checked in October 2026 against each place's own website or page. If something looks wrong, ask us."
+},
+de: {
+  lang: "Sprache", kicker: "Velkomin · Willkommen", h1: "Ihr Reiseführer für <em>Akranes</em>",
+  lede: "Alles, was wir Ihnen bei einem Kaffee erzählen würden: wen Sie anrufen können, was gerade geöffnet hat, wie Sie nach Reykjavík kommen und was sich in der Stadt lohnt. Tippen Sie auf einen Ort, um Karte oder Website zu öffnen.",
+  now: "Uhrzeit in Island", days: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
+  months: ["Jan.", "Feb.", "März", "Apr.", "Mai", "Juni", "Juli", "Aug.", "Sep.", "Okt.", "Nov.", "Dez."],
+  open: "Geöffnet · bis {t}", opens: "Öffnet {t}", opensTomorrow: "Öffnet morgen {t}", opensDay: "Öffnet {d} {t}", closed: "Geschlossen",
+  map: "Karte", site: "Website", call: "Anrufen",
+  help_h: "Wenn Sie Hilfe brauchen", sos_h: "Notruf: Polizei, Feuerwehr, Rettungsdienst, Bergrettung",
+  sos_p: "Kostenlos von jedem Telefon, auch auf Englisch. Die kostenlose App 112 Iceland kann zusätzlich Ihren Standort senden.",
+  med_h: "Medizinische Beratung, rund um die Uhr", med_p: "Pflegekräfte beraten Tag und Nacht bei allem, was kein Notfall ist.",
+  hve_h: "Krankenhaus & Gesundheitszentrum HVE", hve_p: "Merkigerði 9. Gesundheitszentrum werktags 8–16 Uhr; ärztlicher Bereitschaftsdienst werktags 16–22 Uhr und am Wochenende rund um die Uhr (über 1700). Ohne Termin: Sa 10–12, So 11–12 Uhr.",
+  pharm_h: "Apotheke: Apótek Vesturlands", pharm_p: "Smiðjuvellir 32. Mo–Fr 9–18, Sa 10–14, So 12–14 Uhr.",
+  trip_h: "Vor einer Wanderung oder Autofahrt", trip_p: "{safetravel} für Warnungen und um einen Reiseplan zu hinterlassen · Straßenzustand auf {umferdin} oder unter 1777 · Wetter auf {vedur}.",
+  open_h: "Jetzt geöffnet?", open_p: "Reguläre Öffnungszeiten, live nach isländischer Zeit berechnet. An Feiertagen kann es abweichen.",
+  n_supermarket: "Supermarkt", n_grocer: "Lebensmittelladen", n_alcohol: "Alkoholladen, nur hier erhältlich", n_restaurant: "Restaurant",
+  n_lunch: "Mittagstisch", n_pool: "Schwimmbad", n_hotpool: "Heißes Becken am Strand Langisandur", n_museum: "Heimatmuseum", n_lighthouse: "Leuchtturm",
+  move_h: "Unterwegs",
+  bus_tag: "Bus", bus_h: "Strætó 50 nach Reykjavík", bus_p: "Von der Haltestelle Þjóðbraut nach Mjódd in Reykjavík in etwa 45 Minuten, ungefähr alle 1–2 Stunden. Tickets gibt es in der App Klappið.", bus_l: "Fahrpläne auf straeto.is",
+  car_tag: "Auto", car_h: "Reykjavík in 45 Minuten", car_p: "Durch den Hvalfjörður-Tunnel (seit 2018 mautfrei). Zum Flughafen Keflavík etwa 1 Std. 20 Min. Vor Kjalarnes auf Sturmwarnungen achten.", car_l: "Straßenzustand auf umferdin.is",
+  sea_tag: "Meer", sea_h: "Gezeiten sind hier wichtig", sea_p: "Der Tidenhub beträgt bis zu 4 m. Der Strand Langisandur ist bei Ebbe am breitesten; an der Landspitze Breiðin sieht man die Brandung am besten.", sea_l: "Offizielle Gezeitentafeln 2026 (PDF)",
+  town_h: "In der Stadt",
+  beach_tag: "Strand & heißes Becken", beach_h: "Langisandur & Guðlaug", beach_p: "Ein langer goldener Sandstrand, ungewöhnlich für Island. Guðlaug ist ein geothermales Becken in der Ufermauer, mit warmem Wasser und dem Meer direkt darunter.",
+  viti_tag: "Leuchtturm", viti_h: "Akranesviti", viti_p: "Man kann bis nach oben steigen: Blick über die Faxaflói-Bucht bis Reykjavík und an klaren Tagen zum Snæfellsjökull. Der ältere Leuchtturm daneben stammt von 1918.",
+  museum_tag: "Museum", museum_h: "Byggðasafnið í Görðum", museum_p: "Das Heimatmuseum von Akranes: Fischerboote, alte Häuser und Alltagsleben auf der Halbinsel. Im Winter nur samstags.",
+  pool_tag: "Schwimmen", pool_h: "Jaðarsbakkalaug", pool_p: "Das Stadtbad am Strand, mit Hot Pots. Werktags bis 22 Uhr geöffnet.",
+  akrafjall_tag: "Wandern", akrafjall_h: "Akrafjall", akrafjall_p: "Der Hausberg der Stadt. Meist geht es auf den Háihnúkur (555 m), hin und zurück 2–3 Stunden vom Parkplatz an der Straße 51.",
+  food_tag: "Essen", food_h: "Galito & Gamla Kaupfélagið", food_p: "Galito zum Abendessen; Gamla Kaupfélagið bietet werktags ein warmes Mittagessen. Alles andere gibt es bei Krónan und Bónus.",
+  near_h: "Ausflüge in der Nähe", min: "{n} Min.", hour: "{n} Std.",
+  glymur_h: "Wasserfall Glymur", glymur_p: "Einer der höchsten Wasserfälle Islands, am Ende des Hvalfjörður. Steile Wanderung von 3–4 Stunden über einen Baumstamm, der im Winter entfernt wird.",
+  borgarnes_h: "Landnahmezentrum Borgarnes", borgarnes_p: "Die Geschichte der Besiedlung Islands und der Egils-Saga, ideal bei Regen.",
+  deildartunga_h: "Deildartunguhver & Krauma", deildartunga_p: "Die ergiebigste heiße Quelle Europas, direkt daneben das Bad Krauma.",
+  reykjavik_h: "Reykjavík", reykjavik_p: "Mit dem Auto durch den Tunnel oder mit Bus 50 nach Mjódd und dann mit Stadtbussen.",
+  snaefellsnes_h: "Halbinsel Snæfellsnes", snaefellsnes_p: "Kirkjufell, schwarze Strände und der Gletscher Snæfellsjökull. Ein ganzer Tag; im Winter früh losfahren.",
+  tips_h: "Gut zu wissen", tips: [
+    "Das Leitungswasser ist ausgezeichnet; das heiße Wasser riecht leicht nach Schwefel. Das ist normal.",
+    "Im Schwimmbad vor dem Baden ohne Badekleidung duschen. Das ist Vorschrift, und das Personal weist darauf hin.",
+    "Karten werden überall akzeptiert, auch für kleine Beträge. Trinkgeld wird nicht erwartet.",
+    "Alkohol zum Mitnehmen gibt es nur bei Vínbúðin, nicht im Supermarkt.",
+    "Das Wetter ändert sich schnell. Achten Sie auf die Windvorhersage, nicht nur auf die Temperatur.",
+    "Polarlichtsaison ist von September bis April; die Wolkenvorhersage auf vedur.is zeigt, wo der Himmel klar ist."],
+  w_thanks: "Danke", w_morning: "Guten Morgen", w_cheers: "Prost", w_bye: "Tschüss",
+  footer: "Die Öffnungszeiten wurden im Oktober 2026 auf den Websites der jeweiligen Orte geprüft. Wenn etwas nicht stimmt, fragen Sie uns."
+},
+hi: {
+  lang: "भाषा", kicker: "Velkomin · स्वागत है", h1: "<em>आक्रानेस</em> के लिए आपकी गाइड",
+  lede: "वह सब जो हम आपको कॉफ़ी पर बताते: किसे फ़ोन करें, अभी क्या खुला है, रेक्याविक कैसे जाएँ और शहर में क्या देखने लायक है। किसी भी जगह पर टैप करें, उसका नक्शा या वेबसाइट खुल जाएगी।",
+  now: "आइसलैंड का समय", days: ["रवि", "सोम", "मंगल", "बुध", "गुरु", "शुक्र", "शनि"],
+  months: ["जन", "फ़र", "मार्च", "अप्रैल", "मई", "जून", "जुलाई", "अग", "सित", "अक्टू", "नव", "दिस"],
+  open: "खुला · {t} बजे बंद", opens: "{t} बजे खुलेगा", opensTomorrow: "कल {t} बजे खुलेगा", opensDay: "{d} {t} बजे खुलेगा", closed: "बंद",
+  map: "नक्शा", site: "वेबसाइट", call: "कॉल करें",
+  help_h: "अगर आपको मदद चाहिए", sos_h: "आपातकाल: पुलिस, दमकल, एम्बुलेंस, बचाव",
+  sos_p: "किसी भी फ़ोन से मुफ़्त, अंग्रेज़ी में बात कर सकते हैं। मुफ़्त 112 Iceland ऐप आपकी लोकेशन भी भेज सकता है।",
+  med_h: "चिकित्सा सलाह, कभी भी", med_p: "जो आपातकाल न हो, उसके लिए नर्सें दिन-रात सलाह देती हैं।",
+  hve_h: "HVE अस्पताल और स्वास्थ्य केंद्र", hve_p: "Merkigerði 9. स्वास्थ्य केंद्र सोम–शुक्र 8–16; सप्ताह के दिनों में शाम 16–22 और सप्ताहांत में चौबीसों घंटे डॉक्टर ऑन-कॉल (1700 के ज़रिए)। बिना अपॉइंटमेंट: शनि 10–12, रवि 11–12।",
+  pharm_h: "दवा की दुकान: Apótek Vesturlands", pharm_p: "Smiðjuvellir 32. सोम–शुक्र 9–18, शनि 10–14, रवि 12–14।",
+  trip_h: "पैदल यात्रा या ड्राइव से पहले", trip_p: "चेतावनियों और यात्रा योजना के लिए {safetravel} · सड़क की स्थिति {umferdin} पर या 1777 पर · मौसम {vedur} पर।",
+  open_h: "अभी क्या खुला है?", open_p: "सामान्य खुलने का समय, आइसलैंड के समय से लाइव गणना। सार्वजनिक छुट्टियों पर अलग हो सकता है।",
+  n_supermarket: "सुपरमार्केट", n_grocer: "स्थानीय किराना", n_alcohol: "शराब की दुकान, सिर्फ़ यहीं मिलती है", n_restaurant: "रेस्टोरेंट",
+  n_lunch: "दोपहर का भोजन", n_pool: "स्विमिंग पूल", n_hotpool: "लांगिसांदुर बीच पर गर्म पूल", n_museum: "लोक संग्रहालय", n_lighthouse: "लाइटहाउस",
+  move_h: "आने-जाने के साधन",
+  bus_tag: "बस", bus_h: "रेक्याविक के लिए Strætó 50", bus_p: "Þjóðbraut स्टॉप से रेक्याविक के Mjódd तक लगभग 45 मिनट, लगभग हर 1–2 घंटे में। टिकट Klappið ऐप में खरीदें।", bus_l: "समय-सारणी straeto.is पर",
+  car_tag: "कार", car_h: "45 मिनट में रेक्याविक", car_p: "Hvalfjörður सुरंग से होकर (2018 से कोई टोल नहीं)। केफ़्लाविक हवाई अड्डा लगभग 1 घंटा 20 मिनट दूर है। Kjalarnes पार करने से पहले तेज़ हवा की चेतावनी देखें।", car_l: "सड़क की स्थिति umferdin.is पर",
+  sea_tag: "समुद्र", sea_h: "यहाँ ज्वार-भाटा मायने रखता है", sea_p: "ज्वार का अंतर 4 मीटर तक होता है। भाटे के समय लांगिसांदुर बीच सबसे चौड़ा होता है; लहरें देखने के लिए Breiðin सबसे अच्छी जगह है।", sea_l: "आधिकारिक ज्वार तालिका 2026 (PDF)",
+  town_h: "शहर में",
+  beach_tag: "बीच और गर्म पूल", beach_h: "Langisandur & Guðlaug", beach_p: "सुनहरी रेत वाला लंबा बीच, जो आइसलैंड में दुर्लभ है। Guðlaug समुद्री दीवार में बना भू-तापीय पूल है: गर्म पानी और ठीक नीचे समुद्र।",
+  viti_tag: "लाइटहाउस", viti_h: "Akranesviti", viti_p: "आप ऊपर तक चढ़ सकते हैं: Faxaflói खाड़ी के पार रेक्याविक और साफ़ दिनों में Snæfellsjökull दिखता है। पास वाला पुराना लाइटहाउस 1918 का है।",
+  museum_tag: "संग्रहालय", museum_h: "Byggðasafnið í Görðum", museum_p: "आक्रानेस लोक संग्रहालय: मछली पकड़ने की नावें, पुराने घर और प्रायद्वीप का रोज़मर्रा जीवन। सर्दियों में सिर्फ़ शनिवार।",
+  pool_tag: "तैराकी", pool_h: "Jaðarsbakkalaug", pool_p: "बीच के पास शहर का पूल, गर्म टब के साथ। सप्ताह के दिनों में 22:00 तक खुला।",
+  akrafjall_tag: "पैदल यात्रा", akrafjall_h: "Akrafjall", akrafjall_p: "शहर के पीछे का पहाड़। आमतौर पर Háihnúkur (555 मी) तक जाते हैं, सड़क 51 के पास की पार्किंग से आना-जाना 2–3 घंटे।",
+  food_tag: "खाना", food_h: "Galito & Gamla Kaupfélagið", food_p: "रात के खाने के लिए Galito; Gamla Kaupfélagið में सप्ताह के दिनों में गर्म दोपहर का भोजन। बाकी सब Krónan और Bónus में।",
+  near_h: "आस-पास के दिन भर के सफ़र", min: "{n} मिनट", hour: "{n} घंटे",
+  glymur_h: "Glymur झरना", glymur_p: "आइसलैंड के सबसे ऊँचे झरनों में से एक, Hvalfjörður के अंत में। 3–4 घंटे की खड़ी चढ़ाई, जिसमें लकड़ी के लट्ठे से नदी पार करनी होती है; सर्दियों में लट्ठा हटा दिया जाता है।",
+  borgarnes_h: "Borgarnes सेटलमेंट सेंटर", borgarnes_p: "आइसलैंड के बसने की कहानी और Egil's Saga, बारिश के दिन के लिए अच्छी जगह।",
+  deildartunga_h: "Deildartunguhver & Krauma", deildartunga_p: "यूरोप का सबसे शक्तिशाली गर्म झरना, ठीक बगल में Krauma स्नानघर।",
+  reykjavik_h: "रेक्याविक", reykjavik_p: "कार से सुरंग के रास्ते, या बस 50 से Mjódd और फिर शहर की बसें।",
+  snaefellsnes_h: "Snæfellsnes प्रायद्वीप", snaefellsnes_p: "Kirkjufell, काले बीच और Snæfellsjökull ग्लेशियर। पूरा दिन लगता है; सर्दियों में जल्दी निकलें।",
+  tips_h: "जानने लायक बातें", tips: [
+    "नल का पानी बहुत अच्छा है; गर्म पानी में हल्की गंधक की गंध आती है। यह सामान्य है।",
+    "स्विमिंग पूल में जाने से पहले बिना स्विमसूट के नहाना ज़रूरी है। यह नियम है, कर्मचारी याद दिलाएँगे।",
+    "कार्ड हर जगह चलते हैं, छोटी रकम के लिए भी। टिप देने की उम्मीद नहीं होती।",
+    "ले जाने के लिए शराब सिर्फ़ Vínbúðin में मिलती है, सुपरमार्केट में नहीं।",
+    "मौसम जल्दी बदलता है। सिर्फ़ तापमान नहीं, हवा का पूर्वानुमान भी देखें।",
+    "नॉर्दर्न लाइट्स का मौसम सितंबर से अप्रैल तक है; vedur.is पर बादलों का पूर्वानुमान बताता है कि आसमान कहाँ साफ़ है।"],
+  w_thanks: "धन्यवाद", w_morning: "सुप्रभात", w_cheers: "चीयर्स", w_bye: "अलविदा",
+  footer: "खुलने का समय अक्टूबर 2026 में हर जगह की अपनी वेबसाइट या पेज से जाँचा गया था। कुछ गलत लगे तो हमसे पूछें।"
+},
+ru: {
+  lang: "Язык", kicker: "Velkomin · Добро пожаловать", h1: "Ваш гид по <em>Акранесу</em>",
+  lede: "Всё, что мы рассказали бы вам за чашкой кофе: куда звонить, что сейчас открыто, как добраться до Рейкьявика и что посмотреть в городе. Нажмите на любое место, чтобы открыть карту или сайт.",
+  now: "Время в Исландии", days: ["вс", "пн", "вт", "ср", "чт", "пт", "сб"],
+  months: ["янв.", "февр.", "марта", "апр.", "мая", "июня", "июля", "авг.", "сент.", "окт.", "нояб.", "дек."],
+  open: "Открыто · до {t}", opens: "Откроется в {t}", opensTomorrow: "Откроется завтра в {t}", opensDay: "Откроется {d} в {t}", closed: "Закрыто",
+  map: "Карта", site: "Сайт", call: "Позвонить",
+  help_h: "Если нужна помощь", sos_h: "Экстренные службы: полиция, пожарные, скорая, спасатели",
+  sos_p: "Бесплатно с любого телефона, операторы говорят по-английски. Бесплатное приложение 112 Iceland также может отправить ваше местоположение.",
+  med_h: "Медицинская консультация, круглосуточно", med_p: "Медсёстры отвечают днём и ночью по любым вопросам, если это не экстренный случай.",
+  hve_h: "Больница и поликлиника HVE", hve_p: "Merkigerði 9. Поликлиника по будням 8–16; дежурный врач по будням 16–22 и круглосуточно в выходные (через 1700). Приём без записи: сб 10–12, вс 11–12.",
+  pharm_h: "Аптека: Apótek Vesturlands", pharm_p: "Smiðjuvellir 32. Пн–пт 9–18, сб 10–14, вс 12–14.",
+  trip_h: "Перед походом или поездкой", trip_p: "{safetravel}: предупреждения и план поездки · состояние дорог на {umferdin} или по номеру 1777 · прогноз погоды на {vedur}.",
+  open_h: "Что открыто сейчас?", open_p: "Обычные часы работы, рассчитанные по исландскому времени. В праздники возможны изменения.",
+  n_supermarket: "Супермаркет", n_grocer: "Продуктовый магазин", n_alcohol: "Алкогольный магазин, алкоголь продают только здесь", n_restaurant: "Ресторан",
+  n_lunch: "Столовая, обеды", n_pool: "Бассейн", n_hotpool: "Горячий бассейн на пляже Лангисандюр", n_museum: "Краеведческий музей", n_lighthouse: "Маяк",
+  move_h: "Как передвигаться",
+  bus_tag: "Автобус", bus_h: "Strætó 50 до Рейкьявика", bus_p: "От остановки Þjóðbraut до Mjódd в Рейкьявике примерно за 45 минут, примерно каждые 1–2 часа. Билеты покупаются в приложении Klappið.", bus_l: "Расписание на straeto.is",
+  car_tag: "Машина", car_h: "Рейкьявик за 45 минут", car_p: "Через тоннель Хвальфьордюр (бесплатно с 2018 года). До аэропорта Кеблавик около 1 ч 20 мин. Перед Кьяларнесом проверяйте штормовые предупреждения.", car_l: "Состояние дорог на umferdin.is",
+  sea_tag: "Море", sea_h: "Здесь важны приливы", sea_p: "Перепад приливов до 4 м. Пляж Лангисандюр шире всего в отлив; на мысе Брейдин лучше всего смотреть на прибой.", sea_l: "Официальные таблицы приливов 2026 (PDF)",
+  town_h: "В городе",
+  beach_tag: "Пляж и горячий бассейн", beach_h: "Langisandur & Guðlaug", beach_p: "Длинный золотистый песчаный пляж, редкость для Исландии. Guðlaug: геотермальный бассейн, встроенный в морскую стену, тёплая вода, а прямо под вами океан.",
+  viti_tag: "Маяк", viti_h: "Akranesviti", viti_p: "Можно подняться наверх: вид через залив Факсафлоуи на Рейкьявик, а в ясный день и на ледник Снайфедльсйёкюдль. Старый маяк рядом построен в 1918 году.",
+  museum_tag: "Музей", museum_h: "Byggðasafnið í Görðum", museum_p: "Краеведческий музей Акранеса: рыбацкие лодки, старые дома и быт полуострова. Зимой открыт только по субботам.",
+  pool_tag: "Плавание", pool_h: "Jaðarsbakkalaug", pool_p: "Городской бассейн у пляжа, с горячими ваннами. По будням открыт до 22:00.",
+  akrafjall_tag: "Поход", akrafjall_h: "Akrafjall", akrafjall_p: "Гора за городом. Обычно поднимаются на Háihnúkur (555 м), 2–3 часа туда и обратно от парковки у дороги 51.",
+  food_tag: "Еда", food_h: "Galito & Gamla Kaupfélagið", food_p: "Galito для ужина; в Gamla Kaupfélagið по будням горячие обеды. Всё остальное есть в Krónan и Bónus.",
+  near_h: "Поездки на день", min: "{n} мин", hour: "{n} ч",
+  glymur_h: "Водопад Глимюр", glymur_p: "Один из самых высоких водопадов Исландии, в конце фьорда Хвальфьордюр. Крутой поход на 3–4 часа с переправой по бревну; зимой бревно убирают.",
+  borgarnes_h: "Центр заселения в Боргарнесе", borgarnes_p: "История заселения Исландии и «Сага об Эгиле», хороший вариант на дождливый день.",
+  deildartunga_h: "Deildartunguhver & Krauma", deildartunga_p: "Самый мощный горячий источник Европы, рядом купальни Krauma.",
+  reykjavik_h: "Рейкьявик", reykjavik_p: "На машине через тоннель или автобусом 50 до Mjódd, дальше городскими автобусами.",
+  snaefellsnes_h: "Полуостров Снайфедльснес", snaefellsnes_p: "Гора Киркьюфедль, чёрные пляжи и ледник Снайфедльсйёкюдль. На целый день; зимой выезжайте рано.",
+  tips_h: "Полезно знать", tips: [
+    "Водопроводная вода отличная; горячая вода слегка пахнет серой. Это нормально.",
+    "В бассейне перед входом в воду нужно принять душ без купальника. Это правило, и персонал напомнит.",
+    "Карты принимают везде, даже для небольших сумм. Чаевые не обязательны.",
+    "Алкоголь на вынос продаётся только в Vínbúðin, не в супермаркетах.",
+    "Погода меняется быстро. Смотрите прогноз ветра, а не только температуру.",
+    "Сезон северного сияния с сентября по апрель; прогноз облачности на vedur.is показывает, где небо ясное."],
+  w_thanks: "Спасибо", w_morning: "Доброе утро", w_cheers: "За здоровье!", w_bye: "Пока",
+  footer: "Часы работы проверены в октябре 2026 года по сайтам самих заведений. Если что-то не так, спросите нас."
+}};
+
+/* ===== small helpers ===== */
+var ICON = {
+  pin: "<svg class='ico' viewBox='0 0 24 24' aria-hidden='true'><path d='M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z'/><circle cx='12' cy='9.5' r='2.5'/></svg>",
+  web: "<svg class='ico' viewBox='0 0 24 24' aria-hidden='true'><path d='M14 4h6v6M20 4l-9 9'/><path d='M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5'/></svg>",
+  phone: "<svg class='ico' viewBox='0 0 24 24' aria-hidden='true'><path d='M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z'/></svg>"
+};
+var lang = "en";
+function t(k) { return (T[lang][k] !== undefined ? T[lang][k] : T.en[k]); }
+function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+function fill(s, o) { return s.replace(/\{(\w+)\}/g, function (m, k) { return o[k] !== undefined ? o[k] : m; }); }
 function pad(n) { return (n < 10 ? "0" : "") + n; }
-function iceland() { return new Date(); } // read with getUTC* below
 function hm(mins) { return pad(Math.floor(mins / 60) % 24) + ":" + pad(mins % 60); }
-function weekFor(p, day) {   // day: Date at UTC midnight of an Iceland date
+function linkAttrs(href) { return "href='" + esc(href) + "' target='_blank' rel='noopener'"; }
+
+/* ===== opening-hours logic, in Iceland time (UTC all year; guests' phones may be on home time) ===== */
+function weekFor(p, day) {
   if (p.w) return p.w;
   var md = pad(day.getUTCMonth() + 1) + "-" + pad(day.getUTCDate());
   for (var i = 0; i < p.seasons.length; i++) {
@@ -223,39 +397,103 @@ function slot(p, day) {
 }
 function status(p, now) {
   var today = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
-  var mins = now.getUTCHours() * 60 + now.getUTCMinutes(), t = slot(p, today);
-  if (t && mins >= t.open && mins < t.close) return { open: true, text: "Open · closes " + hm(t.close) };
-  if (t && mins < t.open) return { open: false, text: "Opens " + hm(t.open) };
+  var mins = now.getUTCHours() * 60 + now.getUTCMinutes(), s = slot(p, today);
+  if (s && mins >= s.open && mins < s.close) return { open: true, text: fill(t("open"), { t: hm(s.close) }) };
+  if (s && mins < s.open) return { open: false, text: fill(t("opens"), { t: hm(s.open) }) };
   for (var i = 1; i <= 7; i++) {
-    var d = new Date(today.getTime() + i * 864e5), s = slot(p, d);
-    if (s) return { open: false, text: "Opens " + (i === 1 ? "tomorrow" : DAYS[d.getUTCDay()]) + " " + hm(s.open) };
+    var d = new Date(today.getTime() + i * 864e5), n = slot(p, d);
+    if (n) return { open: false, text: i === 1 ? fill(t("opensTomorrow"), { t: hm(n.open) }) : fill(t("opensDay"), { d: t("days")[d.getUTCDay()], t: hm(n.open) }) };
   }
-  return { open: false, text: "Closed" };
+  return { open: false, text: t("closed") };
 }
-function setStatus(el, st) { el.className = "status " + (st.open ? "open" : "shut"); el.textContent = st.text; }
+function statusHtml(st) { return "<span class='status " + (st.open ? "open" : "shut") + "'>" + esc(st.text) + "</span>"; }
+function byName(n) { for (var i = 0; i < PLACES.length; i++) if (PLACES[i].name === n) return PLACES[i]; }
 
+/* ===== render the whole page in the chosen language ===== */
 function render() {
-  var now = iceland();
-  document.getElementById("now").innerHTML = "Iceland time <b>" + pad(now.getUTCHours()) + ":" + pad(now.getUTCMinutes()) +
-    "</b> · " + DAYS[now.getUTCDay()] + " " + now.getUTCDate() + " " +
-    ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][now.getUTCMonth()];
-  var box = document.getElementById("places");
-  box.textContent = "";
-  for (var i = 0; i < PLACES.length; i++) {
-    var p = PLACES[i], row = document.createElement("div"), h = document.createElement("h3"), s = document.createElement("span"), n = document.createElement("p");
-    row.className = "item"; h.textContent = p.name; n.textContent = p.note;
-    setStatus(s, status(p, now));
-    row.appendChild(h); row.appendChild(s); row.appendChild(n); box.appendChild(row);
+  var now = new Date(), h = "", i;
+  document.documentElement.lang = lang;
+  var nodes = document.querySelectorAll("[data-t]");
+  for (i = 0; i < nodes.length; i++) nodes[i].textContent = t(nodes[i].getAttribute("data-t"));
+  nodes = document.querySelectorAll("[data-h]");
+  for (i = 0; i < nodes.length; i++) nodes[i].innerHTML = t(nodes[i].getAttribute("data-h"));
+  document.getElementById("langs").innerHTML = "<span>" + esc(t("lang")) + "</span>" + LANGS.map(function (l) {
+    return "<button type='button' data-lang='" + l[0] + "' aria-pressed='" + (l[0] === lang) + "' lang='" + l[0] + "'>" + l[1] + "</button>";
+  }).join("");
+  document.getElementById("now").innerHTML = esc(t("now")) + " <b>" + pad(now.getUTCHours()) + ":" + pad(now.getUTCMinutes()) + "</b> · " +
+    esc(t("days")[now.getUTCDay()]) + " " + now.getUTCDate() + " " + esc(t("months")[now.getUTCMonth()]);
+
+  // help: numbers to call, health care with map links
+  h = "";
+  for (i = 0; i < HELP.length; i++) {
+    var x = HELP[i];
+    if (x.key === "trip") {
+      h += "<div class='item'><div class='ttl'><h3>" + esc(t("trip_h")) + "</h3></div><span></span><p>" + fill(esc(t("trip_p")), {
+        safetravel: "<a " + linkAttrs("https://safetravel.is") + ">safetravel.is</a>",
+        umferdin: "<a " + linkAttrs("https://umferdin.is") + ">umferdin.is</a>",
+        vedur: "<a " + linkAttrs("https://en.vedur.is") + ">vedur.is</a>" }) + "</p></div>";
+      continue;
+    }
+    var title = x.link ? "<a class='ttl' " + linkAttrs(x.link) + ">" + ICON.pin + "<h3>" + esc(t(x.key + "_h")) + "</h3></a>" : "<div class='ttl'><h3>" + esc(t(x.key + "_h")) + "</h3></div>";
+    var st = x.w ? " " + statusHtml(status(x, now)) : "";
+    h += "<div class='item'>" + title + "<a class='call' href='tel:" + x.tel.replace(/ /g, "") + "' aria-label='" + esc(t("call")) + " " + x.tel + "'>" + ICON.phone + x.tel + "</a>" +
+      "<p>" + esc(t(x.key + "_p")) + st + "</p></div>";
   }
-  setStatus(document.getElementById("st-pharm"), status(PHARMACY, now));
-  setStatus(document.getElementById("st-hve"), status(HEALTH, now));
-  var by = function (name) { for (var k = 0; k < PLACES.length; k++) if (PLACES[k].name === name) return status(PLACES[k], now).text; };
-  document.getElementById("m-gudlaug").textContent = "Guðlaug: " + by("Guðlaug");
-  document.getElementById("m-viti").textContent = by("Akranesviti");
-  document.getElementById("m-museum").textContent = by("Byggðasafnið");
-  document.getElementById("m-pool").textContent = by("Jaðarsbakkalaug");
-  document.getElementById("m-food").textContent = "Galito: " + by("Galito");
+  document.getElementById("help").innerHTML = h;
+
+  // open now: every row opens the map or the website
+  document.getElementById("legend").innerHTML = "<span>" + ICON.pin + esc(t("map")) + "</span><span>" + ICON.web + esc(t("site")) + "</span>";
+  h = "";
+  for (i = 0; i < PLACES.length; i++) {
+    var p = PLACES[i];
+    h += "<a class='item' " + linkAttrs(p.link) + "><div class='ttl'>" + (p.web ? ICON.web : ICON.pin) + "<h3>" + esc(p.name) + "</h3></div>" +
+      statusHtml(status(p, now)) + "<p>" + esc(t("n_" + p.note)) + (p.addr ? " · " + esc(p.addr) : "") + "</p></a>";
+  }
+  document.getElementById("places").innerHTML = h;
+
+  // cards
+  function cards(list, withLink) {
+    return list.map(function (c) {
+      var meta = c.status ? statusHtml(status(byName(c.status), now)) : "";
+      var linkText = withLink ? esc(t(c.key + "_l")) : (c.web ? esc(t("site")) : esc(t("map")));
+      return "<a class='card' " + linkAttrs(c.link) + "><span class='tag'>" + esc(t(c.key + "_tag")) + "</span><h3>" + esc(t(c.key + "_h")) + "</h3>" +
+        "<p>" + esc(t(c.key + "_p")) + "</p>" + (meta ? "<div>" + meta + "</div>" : "") +
+        "<span class='meta'>" + (c.web ? ICON.web : ICON.pin) + linkText + "</span></a>";
+    }).join("");
+  }
+  document.getElementById("move").innerHTML = cards(MOVE, true);
+  document.getElementById("town").innerHTML = cards(TOWN, false);
+
+  // day trips
+  document.getElementById("near").innerHTML = NEAR.map(function (n) {
+    var dur = n.mins < 60 ? fill(t("min"), { n: n.mins }) : fill(t("hour"), { n: n.mins / 60 });
+    return "<a class='item' " + linkAttrs(n.link) + "><div class='ttl'>" + ICON.pin + "<h3>" + esc(t(n.key + "_h")) + "</h3></div><span class='tag'>" + esc(dur) + "</span>" +
+      "<p>" + esc(t(n.key + "_p")) + "</p></a>";
+  }).join("");
+
+  document.getElementById("tips").innerHTML = t("tips").map(function (s) { return "<li>" + esc(s) + "</li>"; }).join("");
+  document.getElementById("words").innerHTML = WORDS.map(function (w) {
+    return "<div class='word'><b lang='is'>" + esc(w[0]) + "</b><span>" + esc(t(w[1])) + "</span></div>";
+  }).join("");
 }
+
+/* ===== language: #de etc. in the link, then the saved choice, then the phone's language ===== */
+function pick() {
+  var hash = location.hash.replace("#", "");
+  if (T[hash]) return hash;
+  try { var saved = localStorage.getItem("guide-lang"); if (T[saved]) return saved; } catch (e) {}
+  var prefs = navigator.languages || [navigator.language || "en"];
+  for (var i = 0; i < prefs.length; i++) { var code = String(prefs[i]).slice(0, 2).toLowerCase(); if (T[code]) return code; }
+  return "en";
+}
+document.getElementById("langs").addEventListener("click", function (e) {
+  var b = e.target.closest("button[data-lang]");
+  if (!b) return;
+  lang = b.getAttribute("data-lang");
+  try { localStorage.setItem("guide-lang", lang); } catch (err) {}
+  render();
+});
+lang = pick();
 render();
 setInterval(render, 30000);
 </script>
