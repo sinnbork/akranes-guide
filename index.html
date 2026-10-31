@@ -124,6 +124,12 @@ footer{font-size:13px;color:var(--muted);border-top:1px solid var(--line);paddin
     <div class="cols" id="town"></div>
   </section>
 
+  <section aria-labelledby="h-museum">
+    <h2 id="h-museum" data-t="mus_h"></h2>
+    <p class="sub" id="museumSub"></p>
+    <div class="list" id="museum"></div>
+  </section>
+
   <section aria-labelledby="h-near">
     <h2 id="h-near" data-t="near_h"></h2>
     <div class="list" id="near"></div>
@@ -155,8 +161,8 @@ var PLACES = [
       { from: "05-02", to: "10-14", w: wk("12:00-20:00", "12:00-20:00", "10:00-18:00", "10:00-18:00") },
       { from: "10-15", to: "05-01", w: wk("16:00-20:00", "16:00-20:00", "10:00-18:00", "10:00-18:00") }] },
   { name: "Byggðasafnið", note: "museum", addr: "Garðaholt 3", link: "https://www.museum.is/enska", web: true, seasons: [
-      { from: "05-15", to: "09-14", w: wk("11:00-17:00", "11:00-17:00", "11:00-17:00", "11:00-17:00") },
-      { from: "09-15", to: "05-14", w: wk("", "", "13:00-17:00", "") }] },
+      { from: "05-15", to: "09-15", w: wk("11:00-17:00", "11:00-17:00", "11:00-17:00", "11:00-17:00") },
+      { from: "09-16", to: "05-14", w: wk("", "", "13:00-17:00", "") }] },
   { name: "Akranesviti", note: "lighthouse", addr: "", link: maps("Akranesviti lighthouse Akranes"), seasons: [
       { from: "05-16", to: "09-15", w: wk("10:00-16:00", "10:00-16:00", "10:00-16:00", "10:00-16:00") },
       { from: "09-16", to: "05-15", w: wk("10:00-16:00", "10:00-16:00", "", "") }] }
@@ -179,6 +185,17 @@ var TOWN = [
   { key: "pool", link: maps("Jaðarsbakkalaug Akranes"), status: "Jaðarsbakkalaug" },
   { key: "akrafjall", link: maps("Akrafjall") },
   { key: "food", link: "https://galito.is/", web: true, status: "Galito" }
+];
+// Folk museum highlights (from museum.is, Oct 2026); each opens its own page on the museum's English site
+var MUS = "https://www.museum.is/enska/";
+var MUSEUM = [
+  { key: "sigurfari", link: MUS + "exhibitions/parts-of-sigurfaris-story" },
+  { key: "globe", link: MUS + "exhibitions/permanent-exhibition/globetrotters" },
+  { key: "glass", link: MUS + "exhibitions/the-houses/nedri-syrupartur" },
+  { key: "gardahus", link: MUS + "exhibitions/the-houses/gardahus" },
+  { key: "sandar", link: MUS + "exhibitions/the-houses/sandar-vestri" },
+  { key: "sheds", link: MUS + "exhibitions/the-houses/onnur-mannvirki" },
+  { key: "atsea", link: MUS + "exhibitions/permanent-exhibition/life-at-sea" }
 ];
 var NEAR = [
   { key: "glymur", link: maps("Glymur waterfall"), mins: 40 },
@@ -219,6 +236,16 @@ en: {
   pool_tag: "Swimming", pool_h: "Jaðarsbakkalaug", pool_p: "The town pool by the beach, with hot tubs. Open until 22:00 on weekdays.",
   akrafjall_tag: "Hike", akrafjall_h: "Akrafjall", akrafjall_p: "The mountain behind town. Háihnúkur (555 m) is the usual goal, 2–3 hours return from the car park off road 51.",
   food_tag: "Food", food_h: "Galito & Gamla Kaupfélagið", food_p: "Galito for dinner in town; Gamla Kaupfélagið serves a hot weekday lunch. Krónan and Bónus have everything else.",
+  mus_h: "Inside the Folk Museum",
+  mus_p: "Byggðasafnið í Görðum, Garðaholt 3. Adults 1,700 kr, under 18 free, audio guide included. Open daily 11–17 from 15 May to 15 September, otherwise Saturdays 13–17. {fees} · {hours}",
+  mus_fees: "Entrance fees", mus_hours: "Opening hours",
+  m_sigurfari_h: "Sigurfari, a fishing cutter from 1885", m_sigurfari_p: "Built near Hull, it fished off Iceland and then for 50 years from the Faroe Islands. In 1920 a month-long storm left the crew burning parts of the ship to keep going; their message in a bottle washed up in Norway months later. It was brought to Akranes in 1974.",
+  m_globe_h: "Globetrotters: seven local lives", m_globe_p: "Among them a boy sent to Winnipeg who came home in bison fur with a rifle, a midwife who wrote a poem about coffee on night shifts, the couple who gave the town a cinema to pay for its hospital, and a Hungarian refugee of 1956.",
+  m_glass_h: "Neðri-Sýrupartur, the “Glass Palace”", m_glass_p: "The oldest timber house in Akranes (1875). Its many glass windows earned it the nickname; up to twenty people lived in it, for a time the entrepreneur Thor Jensen and his family.",
+  m_gardahus_h: "Garðahús, an early concrete house", m_gardahus_p: "The old vicarage at Garðar, built 1876–1882 and, the museum says, the first concrete building of its kind in Iceland and Scandinavia. The museum began here in 1959.",
+  m_sandar_h: "Sandar-Vestri, a home left as it was", m_sandar_p: "A working-class house from 1901 with a mansard roof, owned by one family until 1995 and virtually unchanged since it was built.",
+  m_sheds_h: "Forge, shark shed and fish-drying shed", m_sheds_p: "A smithy built for the 2013 Nordic blacksmithing championship, where smiths sometimes work for visitors; a shark-curing shed modelled on one in Strandir; and the last fish-drying shed of Akranes (about 1890).",
+  m_atsea_h: "Life at sea", m_atsea_p: "Akranes was one of Iceland's first fishing villages, already taking shape in the mid-1600s. Boats, gear and stories show how fishing built the town.",
   near_h: "Day trips nearby", min: "{n} min", hour: "{n} h",
   glymur_h: "Glymur waterfall", glymur_p: "One of Iceland's highest waterfalls, at the end of Hvalfjörður. A steep 3–4 hour hike with a log crossing; the log is removed in winter.",
   borgarnes_h: "Borgarnes Settlement Centre", borgarnes_p: "The story of Iceland's settlement and Egil's Saga, a good rainy-day stop.",
@@ -262,6 +289,16 @@ de: {
   pool_tag: "Schwimmen", pool_h: "Jaðarsbakkalaug", pool_p: "Das Stadtbad am Strand, mit Hot Pots. Werktags bis 22 Uhr geöffnet.",
   akrafjall_tag: "Wandern", akrafjall_h: "Akrafjall", akrafjall_p: "Der Hausberg der Stadt. Meist geht es auf den Háihnúkur (555 m), hin und zurück 2–3 Stunden vom Parkplatz an der Straße 51.",
   food_tag: "Essen", food_h: "Galito & Gamla Kaupfélagið", food_p: "Galito zum Abendessen; Gamla Kaupfélagið bietet werktags ein warmes Mittagessen. Alles andere gibt es bei Krónan und Bónus.",
+  mus_h: "Im Heimatmuseum",
+  mus_p: "Byggðasafnið í Görðum, Garðaholt 3. Erwachsene 1.700 kr, unter 18 Jahren frei, Audioguide inklusive. Vom 15. Mai bis 15. September täglich 11–17 Uhr, sonst samstags 13–17 Uhr. {fees} · {hours}",
+  mus_fees: "Eintrittspreise", mus_hours: "Öffnungszeiten",
+  m_sigurfari_h: "Sigurfari, ein Fischkutter von 1885", m_sigurfari_p: "Bei Hull gebaut, fischte er vor Island und danach 50 Jahre lang von den Färöern aus. 1920 musste die Besatzung in einem einmonatigen Sturm Teile des Schiffs verheizen; ihre Flaschenpost wurde Monate später in Norwegen angespült. 1974 kam er nach Akranes.",
+  m_globe_h: "Weltenbummler: sieben Lebensgeschichten", m_globe_p: "Darunter ein Junge, der nach Winnipeg geschickt wurde und im Bisonfell mit Gewehr heimkehrte, eine Hebamme, die ein Gedicht über Kaffee in der Nachtschicht schrieb, das Ehepaar, das der Stadt ein Kino schenkte, um das Krankenhaus zu finanzieren, und ein ungarischer Flüchtling von 1956.",
+  m_glass_h: "Neðri-Sýrupartur, der „Glaspalast“", m_glass_p: "Das älteste Holzhaus in Akranes (1875). Die vielen Glasfenster brachten ihm den Spitznamen ein; bis zu zwanzig Menschen lebten darin, eine Zeit lang auch der Unternehmer Thor Jensen mit Familie.",
+  m_gardahus_h: "Garðahús, ein frühes Betonhaus", m_gardahus_p: "Das alte Pfarrhaus von Garðar, 1876–1882 erbaut und laut Museum das erste Betongebäude seiner Art in Island und Skandinavien. Hier begann 1959 das Museum.",
+  m_sandar_h: "Sandar-Vestri, ein Zuhause wie damals", m_sandar_p: "Ein Arbeiterhaus von 1901 mit Mansarddach, bis 1995 im Besitz einer Familie und seit dem Bau nahezu unverändert.",
+  m_sheds_h: "Schmiede, Haischuppen und Fischtrockenschuppen", m_sheds_p: "Eine Schmiede, gebaut für die Nordische Schmiedemeisterschaft 2013, in der manchmal vor Besuchern gearbeitet wird; ein Schuppen zum Fermentieren von Hai nach einem Vorbild in Strandir; und der letzte Fischtrockenschuppen von Akranes (um 1890).",
+  m_atsea_h: "Leben auf See", m_atsea_p: "Akranes war eines der ersten Fischerdörfer Islands und nahm schon Mitte des 17. Jahrhunderts Gestalt an. Boote, Geräte und Geschichten zeigen, wie der Fischfang die Stadt aufbaute.",
   near_h: "Ausflüge in der Nähe", min: "{n} Min.", hour: "{n} Std.",
   glymur_h: "Wasserfall Glymur", glymur_p: "Einer der höchsten Wasserfälle Islands, am Ende des Hvalfjörður. Steile Wanderung von 3–4 Stunden über einen Baumstamm, der im Winter entfernt wird.",
   borgarnes_h: "Landnahmezentrum Borgarnes", borgarnes_p: "Die Geschichte der Besiedlung Islands und der Egils-Saga, ideal bei Regen.",
@@ -305,6 +342,16 @@ hi: {
   pool_tag: "तैराकी", pool_h: "Jaðarsbakkalaug", pool_p: "बीच के पास शहर का पूल, गर्म टब के साथ। सप्ताह के दिनों में 22:00 तक खुला।",
   akrafjall_tag: "पैदल यात्रा", akrafjall_h: "Akrafjall", akrafjall_p: "शहर के पीछे का पहाड़। आमतौर पर Háihnúkur (555 मी) तक जाते हैं, सड़क 51 के पास की पार्किंग से आना-जाना 2–3 घंटे।",
   food_tag: "खाना", food_h: "Galito & Gamla Kaupfélagið", food_p: "रात के खाने के लिए Galito; Gamla Kaupfélagið में सप्ताह के दिनों में गर्म दोपहर का भोजन। बाकी सब Krónan और Bónus में।",
+  mus_h: "लोक संग्रहालय के अंदर",
+  mus_p: "Byggðasafnið í Görðum, Garðaholt 3. वयस्क 1,700 kr, 18 साल से कम उम्र के लिए मुफ़्त, ऑडियो गाइड शामिल। 15 मई से 15 सितंबर तक रोज़ 11–17, बाकी समय शनिवार 13–17। {fees} · {hours}",
+  mus_fees: "प्रवेश शुल्क", mus_hours: "खुलने का समय",
+  m_sigurfari_h: "Sigurfari, 1885 की मछली पकड़ने वाली नाव", m_sigurfari_p: "इंग्लैंड में Hull के पास बनी यह नाव आइसलैंड के पास और फिर 50 साल तक फ़रो द्वीपों से मछली पकड़ती रही। 1920 में महीने भर चले तूफ़ान में चालक दल को जहाज़ के हिस्से जलाने पड़े; उनका बोतल में भेजा संदेश महीनों बाद नॉर्वे के तट पर मिला। 1974 में इसे आक्रानेस लाया गया।",
+  m_globe_h: "विश्व-यात्री: सात स्थानीय जीवन", m_globe_p: "इनमें एक लड़का है जिसे विनिपेग भेजा गया था और जो बाइसन की खाल पहने, राइफ़ल लिए लौटा; एक दाई जिसने रात की ड्यूटी में कॉफ़ी पर कविता लिखी; वह दंपति जिसने अस्पताल का ख़र्च उठाने के लिए शहर को सिनेमा दिया; और 1956 का एक हंगेरियन शरणार्थी।",
+  m_glass_h: "Neðri-Sýrupartur, \"काँच का महल\"", m_glass_p: "आक्रानेस का सबसे पुराना लकड़ी का घर (1875)। काँच की कई खिड़कियों के कारण इसे यह नाम मिला; इसमें बीस लोग तक रहते थे, एक समय उद्यमी Thor Jensen भी अपने परिवार के साथ।",
+  m_gardahus_h: "Garðahús, कंक्रीट का एक शुरुआती घर", m_gardahus_p: "Garðar का पुराना पादरी-निवास, 1876–1882 में बना, और संग्रहालय के अनुसार आइसलैंड और स्कैंडिनेविया में अपनी तरह की पहली कंक्रीट इमारत। 1959 में संग्रहालय की शुरुआत यहीं हुई।",
+  m_sandar_h: "Sandar-Vestri, जैसा था वैसा घर", m_sandar_p: "1901 का एक मज़दूर परिवार का घर, मैनसार्ड छत वाला, 1995 तक एक ही परिवार के पास रहा और बनने के बाद से लगभग नहीं बदला।",
+  m_sheds_h: "लोहार की भट्ठी, शार्क शेड और मछली सुखाने का शेड", m_sheds_p: "2013 की नॉर्डिक लोहार प्रतियोगिता के लिए बनी भट्ठी, जहाँ कभी-कभी दर्शकों के सामने काम होता है; Strandir के एक शेड की तर्ज़ पर बना शार्क सुखाने का शेड; और आक्रानेस का आख़िरी मछली सुखाने का शेड (लगभग 1890)।",
+  m_atsea_h: "समुद्र पर जीवन", m_atsea_p: "आक्रानेस आइसलैंड के पहले मछुआरा गाँवों में से एक था, जो 1600 के दशक के मध्य तक आकार लेने लगा था। नावें, औज़ार और कहानियाँ दिखाती हैं कि मछली पकड़ने ने शहर को कैसे बनाया।",
   near_h: "आस-पास के दिन भर के सफ़र", min: "{n} मिनट", hour: "{n} घंटे",
   glymur_h: "Glymur झरना", glymur_p: "आइसलैंड के सबसे ऊँचे झरनों में से एक, Hvalfjörður के अंत में। 3–4 घंटे की खड़ी चढ़ाई, जिसमें लकड़ी के लट्ठे से नदी पार करनी होती है; सर्दियों में लट्ठा हटा दिया जाता है।",
   borgarnes_h: "Borgarnes सेटलमेंट सेंटर", borgarnes_p: "आइसलैंड के बसने की कहानी और Egil's Saga, बारिश के दिन के लिए अच्छी जगह।",
@@ -348,6 +395,16 @@ ru: {
   pool_tag: "Плавание", pool_h: "Jaðarsbakkalaug", pool_p: "Городской бассейн у пляжа, с горячими ваннами. По будням открыт до 22:00.",
   akrafjall_tag: "Поход", akrafjall_h: "Akrafjall", akrafjall_p: "Гора за городом. Обычно поднимаются на Háihnúkur (555 м), 2–3 часа туда и обратно от парковки у дороги 51.",
   food_tag: "Еда", food_h: "Galito & Gamla Kaupfélagið", food_p: "Galito для ужина; в Gamla Kaupfélagið по будням горячие обеды. Всё остальное есть в Krónan и Bónus.",
+  mus_h: "Что посмотреть в краеведческом музее",
+  mus_p: "Byggðasafnið í Görðum, Garðaholt 3. Взрослые 1700 kr, до 18 лет бесплатно, аудиогид включён. С 15 мая по 15 сентября ежедневно 11–17, в остальное время по субботам 13–17. {fees} · {hours}",
+  mus_fees: "Цены на билеты", mus_hours: "Часы работы",
+  m_sigurfari_h: "Sigurfari, рыболовный катер 1885 года", m_sigurfari_p: "Построен под Халлом, ловил рыбу у берегов Исландии, а затем 50 лет ходил с Фарерских островов. В 1920 году во время месячного шторма команде пришлось жечь части судна; их письмо в бутылке через несколько месяцев выбросило на берег в Норвегии. В Акранес катер привезли в 1974 году.",
+  m_globe_h: "Путешественники: семь местных судеб", m_globe_p: "Среди них мальчик, отправленный в Виннипег, который вернулся домой в бизоньей шубе и с ружьём; акушерка, написавшая стихи о кофе на ночных сменах; супруги, подарившие городу кинотеатр, чтобы на его доходы построить больницу; и венгерский беженец 1956 года.",
+  m_glass_h: "Neðri-Sýrupartur, «Стеклянный дворец»", m_glass_p: "Самый старый деревянный дом Акранеса (1875). Прозвище он получил за множество застеклённых окон; в нём жило до двадцати человек, одно время и предприниматель Тор Йенсен с семьёй.",
+  m_gardahus_h: "Garðahús, один из первых бетонных домов", m_gardahus_p: "Старый дом пастора в Гардаре, построен в 1876–1882 годах; по словам музея, первое бетонное здание такого типа в Исландии и Скандинавии. С него в 1959 году начался музей.",
+  m_sandar_h: "Sandar-Vestri, дом, каким он был", m_sandar_p: "Дом рабочей семьи 1901 года с мансардной крышей; до 1995 года принадлежал одной семье и почти не изменился со времени постройки.",
+  m_sheds_h: "Кузница, сарай для акулы и сарай для сушки рыбы", m_sheds_p: "Кузница, построенная к чемпионату Северных стран по кузнечному делу 2013 года, где кузнецы иногда работают при посетителях; сарай для вяления акулы по образцу сарая в Страндире; и последний в Акранесе сарай для сушки рыбы (около 1890 года).",
+  m_atsea_h: "Жизнь в море", m_atsea_p: "Акранес был одной из первых рыбацких деревень Исландии и сложился уже к середине XVII века. Лодки, снасти и истории показывают, как рыболовство построило город.",
   near_h: "Поездки на день", min: "{n} мин", hour: "{n} ч",
   glymur_h: "Водопад Глимюр", glymur_p: "Один из самых высоких водопадов Исландии, в конце фьорда Хвальфьордюр. Крутой поход на 3–4 часа с переправой по бревну; зимой бревно убирают.",
   borgarnes_h: "Центр заселения в Боргарнесе", borgarnes_p: "История заселения Исландии и «Сага об Эгиле», хороший вариант на дождливый день.",
@@ -463,6 +520,16 @@ function render() {
   }
   document.getElementById("move").innerHTML = cards(MOVE, true);
   document.getElementById("town").innerHTML = cards(TOWN, false);
+
+  // folk museum highlights: practical line with today's status, then stories that link to the museum's own pages
+  document.getElementById("museumSub").innerHTML = fill(esc(t("mus_p")), {
+    fees: "<a " + linkAttrs(MUS + "thjonusta/entrance-fee") + ">" + esc(t("mus_fees")) + "</a>",
+    hours: "<a " + linkAttrs(MUS + "about-the-museum/opening-hours") + ">" + esc(t("mus_hours")) + "</a>" }) +
+    " · " + statusHtml(status(byName("Byggðasafnið"), now));
+  document.getElementById("museum").innerHTML = MUSEUM.map(function (m) {
+    return "<a class='item' " + linkAttrs(m.link) + "><div class='ttl'><h3>" + esc(t("m_" + m.key + "_h")) + "</h3></div>" + ICON.web +
+      "<p>" + esc(t("m_" + m.key + "_p")) + "</p></a>";
+  }).join("");
 
   // day trips
   document.getElementById("near").innerHTML = NEAR.map(function (n) {
